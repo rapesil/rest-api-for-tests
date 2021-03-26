@@ -25,6 +25,8 @@ public class HttpRequestTest {
     @DisplayName("When receive a get request in root path, should return Hello, World.")
     void shouldReturnHelloWorld() {
         given()
+            .auth()
+                .basic("user", "123456")
         .when()
             .get("/")
         .then()

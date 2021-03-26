@@ -26,6 +26,11 @@ The command above will start a local server in `localhost:8080`. Now, you can po
 
 For while only one endpoint is available
 
+> UPDATE: Now you should authenticate before send your request
+
+* user: user
+* pass: 123456
+
 `GET` / - should return status code 200 and a simple JSON
 
 ```json
