@@ -1,3 +1,4 @@
+[![Java CI with Gradle](https://github.com/rapesil/rest-api-for-tests/actions/workflows/ci.yml/badge.svg)](https://github.com/rapesil/rest-api-for-tests/actions/workflows/ci.yml)
 # REST-API-FOR-TESTS
 
 `REST-API-FOR-TEST` is a simple project that I've created to improve my skills as a developer. My only intention with this is to train my abilities. I am developing a simple REST API to use as examples in my medium articles and train my skills as a tester.
