@@ -10,7 +10,7 @@ on:
     branches: [ main ]
 
 jobs:
-  build:
+  build and test:
 
     runs-on: ubuntu-latest
 
@@ -30,3 +30,10 @@ jobs:
       
     - name: Run Tests
       run: ./gradlew test
+
+    - name: Test Reporter
+      uses: dorny/test-reporter@v1.4.3
+      with:
+       name: Test Report
+       path: "**/surefire-reports/TEST-*.xml"
+       reporter: java-junit
