@@ -19,7 +19,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .authenticated()
                 .and()
-                .httpBasic();
+                .httpBasic()
+                .and()
+                .formLogin()
+                .and()
+                .csrf().disable();
     }
 
     @Autowired

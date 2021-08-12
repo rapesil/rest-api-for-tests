@@ -32,7 +32,7 @@ public class HttpRequestTest {
             .get("/")
         .then()
             .statusCode(HttpStatus.SC_OK)
-            .body("hello", Matchers.is("Hello, World"));
+            .body(Matchers.is("API is up and running"));
     }
 
     @Test
