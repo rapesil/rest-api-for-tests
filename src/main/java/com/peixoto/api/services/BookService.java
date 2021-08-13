@@ -38,11 +38,7 @@ public class BookService {
 
     @Transactional(rollbackOn = Exception.class)
     public Book save(Book book) {
-        Book newBook = new Book();
-        newBook.setTitle(book.getTitle());
-        newBook.setCategory(book.getCategory());
-        newBook.setAuthor(book.getAuthor());
-        return bookRepository.save(newBook);
+        return bookRepository.save(book);
 
     }
 
@@ -52,8 +48,8 @@ public class BookService {
         savedBook.setTitle(book.getTitle());
         savedBook.setCategory(book.getCategory());
         savedBook.setAuthor(book.getAuthor());
-        bookRepository.save(savedBook, book.getId());
-//        this.save(savedBook);
+        savedBook.setId(book.getId());
+        bookRepository.save(savedBook);
     }
 
     public void remove(long id) {
