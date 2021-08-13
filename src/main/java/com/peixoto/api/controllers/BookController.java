@@ -1,10 +1,8 @@
 package com.peixoto.api.controllers;
 
 import com.peixoto.api.domain.Book;
-import com.peixoto.api.requests.BookPostRequestBody;
 import com.peixoto.api.requests.BookPutRequestBody;
 import com.peixoto.api.services.BookService;
-import com.sun.org.apache.bcel.internal.generic.ARETURN;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +15,6 @@ import org.springframework.web.client.RestTemplate;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -72,7 +69,7 @@ public class BookController {
             "|| hasRole('ADMIN')"
     )
     public ResponseEntity<Void> update(@NotNull @RequestBody BookPutRequestBody book) {
-        bookService.update(book);
+        bookService.replace(book);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
