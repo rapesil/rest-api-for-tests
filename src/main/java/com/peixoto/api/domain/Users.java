@@ -28,7 +28,9 @@ public class Users implements UserDetails {
     private Long id;
 
     private String username;
+
     private String password;
+
     private String authhorities;
 
     @Override

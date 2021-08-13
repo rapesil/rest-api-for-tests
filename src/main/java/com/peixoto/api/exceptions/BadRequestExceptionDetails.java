@@ -10,7 +10,10 @@ import java.time.LocalDateTime;
 public class BadRequestExceptionDetails {
 
     private String title;
+
     private int status;
+
     private String details;
+
     private LocalDateTime timestamp;
 }

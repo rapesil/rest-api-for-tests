@@ -11,13 +11,12 @@ import springfox.documentation.spring.web.plugins.Docket;
 @Configuration
 @EnableOpenApi
 public class SwaggerConfig {
-	@Bean
+    @Bean
 	public Docket api(){
 		return new Docket(DocumentationType.SWAGGER_2)
-				   .select()
-				   .apis(RequestHandlerSelectors.basePackage("org.springframework.boot").negate())
-				   .paths(PathSelectors.any())
-				   .build();
-
-	}
+			.select()
+			.apis(RequestHandlerSelectors.basePackage("org.springframework.boot").negate())
+			.paths(PathSelectors.any())
+			.build();
+    }
 }
