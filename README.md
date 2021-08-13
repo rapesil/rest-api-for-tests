@@ -21,21 +21,18 @@ If you prefer to test this API against `POSTMAN`, you should run:
 ./gradlew bootRun
 ```
 
-The command above will start a local server in `localhost:8080`. Now, you can point your test to this server.
+The command above will start a local server in `localhost:8089`. Now, you can point your test to this server.
 
-## Available endpoints
+## Progress
 
-For while only one endpoint is available
+You can request to `/books` endpoint using methods `GET`, `POST`, `PUT` and `DELETE`.
 
-> UPDATE: Now you should authenticate before send your request
+I've created `/books/external` just to simulate an external call to another api. This endpoint just call `https://reqres.in/api/users?page=2`
+. 
 
-* user: user
-* pass: 123456
+## Authentication and Authorization
 
-`GET` / - should return status code 200 and a simple JSON
+Some functionalities needs you have a valid user. Actually we have two users:
 
-```json
-{
-    "hello": "Hello, World"
-}
-```
+* ADMIN with password `123456`. 
+* USER with password `123`
