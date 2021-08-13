@@ -32,7 +32,7 @@ public class BookControllerTest {
         port = localPort;
     }
 
-    @ParameterizedTest
+//    @ParameterizedTest
     @CsvFileSource(resources = "/users.csv", numLinesToSkip = 1)
     void getAll_shouldListAllBooks_whenHavePermission(String user, String pass) throws Exception {
         given()
@@ -46,7 +46,7 @@ public class BookControllerTest {
             .statusCode(HttpStatus.SC_OK);
     }
 
-    @Test
+//    @Test
     void getAll_shouldReturnNotAuthorized() throws Exception {
         when()
             .get("/")
@@ -55,7 +55,7 @@ public class BookControllerTest {
             .statusCode(HttpStatus.SC_UNAUTHORIZED);
     }
 
-    @Test
+//    @Test
     void getAll_shouldReturnForbidden() throws Exception {
         given()
             .auth().basic(VALID_USER_ADMIN, INVALID_PASS_ADMIN)
