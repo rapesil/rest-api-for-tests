@@ -20,7 +20,6 @@ dependencies {
 	implementation group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '2.4.4'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.4.4'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.4.4'
-	implementation group: 'org.mapstruct', name: 'mapstruct', version: '1.4.1.Final'
 	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.26'
 	testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.20.2'
 	testImplementation group: 'io.rest-assured', name: 'spring-mock-mvc', version: '4.0.0'
