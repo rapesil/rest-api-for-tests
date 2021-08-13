@@ -6,13 +6,16 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
+import org.springframework.boot.test.context.SpringBootContextLoader;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.test.context.ContextConfiguration;
 
 import static io.restassured.RestAssured.*;
 
 @Tag("integrationTest")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@ContextConfiguration(loader = SpringBootContextLoader.class)
 public class BookControllerTest {
 
     @LocalServerPort
