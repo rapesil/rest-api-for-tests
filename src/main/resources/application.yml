@@ -1,5 +1,5 @@
 server:
-  port: 8089
+  port: 8080
 #  error:
 #    include-stacktrace: on_param
 
@@ -11,3 +11,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+
+springdoc:
+    paths-to-exclude: /swagger-resources/**'

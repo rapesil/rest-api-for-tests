@@ -4,12 +4,11 @@ plugins {
 	id 'org.springframework.boot' version '2.4.3'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
-	id "io.freefair.lombok" version "5.3.0"
 }
 
 group = 'com.peixoto.api'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '1.8'
+sourceCompatibility = '11'
 
 repositories {
 	mavenCentral()
@@ -23,13 +22,13 @@ dependencies {
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.4.4'
 	implementation group: 'org.mapstruct', name: 'mapstruct', version: '1.4.1.Final'
 	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.26'
-
 	testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.20.2'
 	testImplementation group: 'io.rest-assured', name: 'spring-mock-mvc', version: '4.0.0'
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
 	testImplementation group: 'org.springframework.security', name: 'spring-security-test', version: '5.5.1'
 
-
+	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '3.0.0'
+	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
 
 	compileOnly 'org.projectlombok:lombok:1.18.16'
 	annotationProcessor 'org.projectlombok:lombok:1.18.16'
