@@ -1,12 +1,17 @@
 package com.peixoto.api.controllers;
 
+import com.peixoto.api.services.BookService;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootContextLoader;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 
 import static io.restassured.RestAssured.basePath;
@@ -18,7 +23,11 @@ import static io.restassured.RestAssured.when;
 @Tag("integrationTest")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ContextConfiguration(loader = SpringBootContextLoader.class)
+@ActiveProfiles("test")
 public class BookControllerTest {
+
+    @Autowired
+    private BookService bookService;
 
     @LocalServerPort
     private int localPort;
@@ -34,7 +43,7 @@ public class BookControllerTest {
         port = localPort;
     }
 
-    //    @ParameterizedTest
+    @ParameterizedTest
     @CsvFileSource(resources = "/users.csv", numLinesToSkip = 1)
     void getAll_shouldListAllBooks_whenHavePermission(String user, String pass) throws Exception {
         given()
@@ -42,13 +51,13 @@ public class BookControllerTest {
             .auth()
             .basic(user, pass)
         .when()
-            .get("/")
+            .get("/" )
         .then()
             .log().all()
             .statusCode(HttpStatus.SC_OK);
     }
 
-    //    @Test
+    @Test
     void getAll_shouldReturnNotAuthorized() throws Exception {
         when()
             .get("/")
@@ -57,7 +66,7 @@ public class BookControllerTest {
             .statusCode(HttpStatus.SC_UNAUTHORIZED);
     }
 
-    //    @Test
+    @Test
     void getAll_shouldReturnForbidden() throws Exception {
         given()
             .auth().basic(VALID_USER_ADMIN, INVALID_PASS_ADMIN)

@@ -5,29 +5,71 @@ plugins {
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 	id 'checkstyle'
+	id 'application'
 	id 'idea'
 }
+
+apply plugin: 'jacoco'
+apply from: "$rootDir/gradle/integrationTest.gradle"
 
 group = 'com.peixoto.api'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
+targetCompatibility = '11'
 
 repositories {
 	mavenCentral()
 }
 
+def excludeSourceDirs = [
+		'**/dto/**',
+		'**/config/**',
+		'**/*Application.java',
+]
+
+jacocoTestReport {
+	dependsOn test
+	reports {
+		xml.enabled true
+	}
+	afterEvaluate {
+		classDirectories.setFrom(files(classDirectories.files.collect {
+			fileTree(dir: it, exclude: excludeSourceDirs)
+		}))
+	}
+}
+test.finalizedBy jacocoTestCoverageVerification
+jacocoTestCoverageVerification {
+	dependsOn jacocoTestReport
+	violationRules {
+		rule {
+			limit {
+				minimum = 0.0
+			}
+		}
+	}
+	afterEvaluate {
+		classDirectories.setFrom(files(classDirectories.files.collect {
+			fileTree(dir: it, exclude: excludeSourceDirs)
+		}))
+	}
+}
+
 dependencies {
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.4.4'
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.4.4'
-	implementation group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '2.4.4'
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.4.4'
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.4.4'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.5.3'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.5.3'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '2.5.3'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.5.3'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.5.3'
 	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.26'
 	testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.20.2'
-	testImplementation group: 'io.rest-assured', name: 'spring-mock-mvc', version: '4.0.0'
+	testImplementation group: 'io.rest-assured', name: 'rest-assured', version: '4.1.2'
+
+	implementation group: 'io.rest-assured', name: 'rest-assured-all', version: '4.1.2'
+
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
 	testImplementation group: 'org.springframework.security', name: 'spring-security-test', version: '5.5.1'
-
+	testImplementation "com.h2database:h2"
 	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '3.0.0'
 	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
 
@@ -40,4 +82,7 @@ dependencies {
 
 test {
 	useJUnitPlatform()
+	testLogging {
+		events "passed", "skipped", "failed"
+	}
 }
