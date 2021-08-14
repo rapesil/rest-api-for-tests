@@ -29,7 +29,7 @@ Abra uma nova aba do terminal e digite:
 
 O projeto será inicializado na porta `8080`. Caso deseje inicializar em outra porta, basta alterar a propriedade `port` em `src/main/resources/application.yml`.
 
-Pronto! Você pode apontar seus testes para ```http://localhost:8080`. 
+Pronto! Você pode apontar seus testes para `http://localhost:8080`. 
 
 
 
