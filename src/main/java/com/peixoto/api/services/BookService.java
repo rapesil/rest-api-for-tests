@@ -38,7 +38,7 @@ public class BookService {
     public void replace(BookPutRequestBody book) {
         Book savedBook = findById(book.getId());
         savedBook.setTitle(book.getTitle());
-        savedBook.setCategory(book.getCategory());
+        savedBook.setBookCategory(book.getCategory());
         savedBook.setAuthor(book.getAuthor());
         savedBook.setId(book.getId());
         bookRepository.save(savedBook);

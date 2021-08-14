@@ -41,7 +41,7 @@ public class BookServiceTest {
         Assertions.assertThat(book.getId()).isEqualTo(1L);
         Assertions.assertThat(book.getTitle()).isEqualTo("title");
         Assertions.assertThat(book.getAuthor()).isEqualTo("author");
-        Assertions.assertThat(book.getCategory()).isEqualTo("cat");
+        Assertions.assertThat(book.getBookCategory()).isEqualTo("cat");
     }
 
     @Test
@@ -55,7 +55,7 @@ public class BookServiceTest {
     void save_shouldSaveNewBook() {
         Book book = new Book();
         book.setAuthor("Rafael Peixoto");
-        book.setCategory("Software Test");
+        book.setBookCategory("Software Test");
         book.setTitle("Selenium WebDriver");
 
         Assertions.assertThatCode(() -> bookService.save(book))
@@ -67,7 +67,7 @@ public class BookServiceTest {
         Book savedBook = new Book();
         savedBook.setId(1L);
         savedBook.setAuthor("Rafael Peixoto");
-        savedBook.setCategory("Software Test");
+        savedBook.setBookCategory("Software Test");
         savedBook.setTitle("Selenium WebDriver");
 
         BookPutRequestBody newBook = new BookPutRequestBody(

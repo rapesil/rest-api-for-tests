@@ -22,29 +22,37 @@ repositories {
 }
 
 def excludeSourceDirs = [
-		'**/dto/**',
 		'**/config/**',
-		'**/*Application.java',
+		'**/swagger/**',
+		'**/exceptions/**',
+		'**/repository/**',
+		'**/handler/**',
+		'**/requests/**',
+		'**/domain/**',
+		'**/TestingWebApplication.java',
 ]
 
 jacocoTestReport {
 	dependsOn test
 	reports {
-		xml.enabled true
+		html.enabled true
+
 	}
 	afterEvaluate {
 		classDirectories.setFrom(files(classDirectories.files.collect {
 			fileTree(dir: it, exclude: excludeSourceDirs)
 		}))
 	}
+	getExecutionData().setFrom(fileTree(buildDir).include("/jacoco/*.exec"))
 }
+
 test.finalizedBy jacocoTestCoverageVerification
 jacocoTestCoverageVerification {
 	dependsOn jacocoTestReport
 	violationRules {
 		rule {
 			limit {
-				minimum = 0.0
+				minimum = 0.8
 			}
 		}
 	}
@@ -62,16 +70,15 @@ dependencies {
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.5.3'
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.5.3'
 	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.26'
-	testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.20.2'
-	testImplementation group: 'io.rest-assured', name: 'rest-assured', version: '4.1.2'
-
+	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '3.0.0'
+	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
 	implementation group: 'io.rest-assured', name: 'rest-assured-all', version: '4.1.2'
 
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
 	testImplementation group: 'org.springframework.security', name: 'spring-security-test', version: '5.5.1'
 	testImplementation "com.h2database:h2"
-	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '3.0.0'
-	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
+	testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.20.2'
+	testImplementation group: 'io.rest-assured', name: 'rest-assured', version: '4.1.2'
 
 	compileOnly 'org.projectlombok:lombok:1.18.16'
 	annotationProcessor 'org.projectlombok:lombok:1.18.16'
@@ -85,4 +92,5 @@ test {
 	testLogging {
 		events "passed", "skipped", "failed"
 	}
+
 }

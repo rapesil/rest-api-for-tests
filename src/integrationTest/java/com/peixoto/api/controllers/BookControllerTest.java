@@ -1,6 +1,8 @@
 package com.peixoto.api.controllers;
 
-import com.peixoto.api.services.BookService;
+import com.peixoto.api.domain.Book;
+import com.peixoto.api.repository.BookRepository;
+import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
@@ -19,6 +21,7 @@ import static io.restassured.RestAssured.baseURI;
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.port;
 import static io.restassured.RestAssured.when;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @Tag("integrationTest")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -27,7 +30,7 @@ import static io.restassured.RestAssured.when;
 public class BookControllerTest {
 
     @Autowired
-    private BookService bookService;
+    private BookRepository bookRepository;
 
     @LocalServerPort
     private int localPort;
@@ -75,6 +78,28 @@ public class BookControllerTest {
         .then()
             .log().all()
             .statusCode(HttpStatus.SC_UNAUTHORIZED);
+    }
+
+    @Test
+    void post()  {
+        Book book = new Book();
+        book.setAuthor("Rafael Peixoto");
+        book.setTitle("Selenium WebDriver");
+        book.setBookCategory("Software Test");
+
+        given()
+            .log().all()
+            .auth()
+            .basic(VALID_USER_ADMIN, VALID_PASS_ADMIN)
+            .contentType(ContentType.JSON)
+            .body(book)
+        .when()
+            .post("/" )
+        .then()
+            .log().all()
+            .statusCode(HttpStatus.SC_CREATED);
+
+        assertThat(bookRepository.findAll().size()).isEqualTo(1);
     }
 
 

@@ -28,5 +28,6 @@ public class Book {
     @NotNull(message = "Author cannot be null")
     private String author;
 
-    private String category;
+    private String bookCategory;
+
 }
