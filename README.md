@@ -1,7 +1,7 @@
 [![Java CI with Gradle](https://github.com/rapesil/rest-api-for-tests/actions/workflows/ci.yml/badge.svg)](https://github.com/rapesil/rest-api-for-tests/actions/workflows/ci.yml)
 # REST-API-FOR-TESTS
 
-Inspirado no projeto [ServeRest do Paulo Gonçalves](), eu decidi criar desenvolver uma api. A ideia é conseguir desenvolver um projeto em Java que sirva para dois objetivos:
+API simples para:
 
 * Treinar minhas habilidades de desenvolvimento;
 * Ter um projeto que ajude testadores que trabalhem com Java e Spring.
