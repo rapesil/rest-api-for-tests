@@ -88,7 +88,9 @@ dependencies {
 }
 
 test {
-	useJUnitPlatform()
+	useJUnitPlatform() {
+		excludeTags 'integrationTest'
+	}
 	testLogging {
 		events "passed", "skipped", "failed"
 	}
