@@ -33,7 +33,7 @@ def excludeSourceDirs = [
 ]
 
 jacocoTestReport {
-	dependsOn test
+	dependsOn integrationTest
 	reports {
 		html.enabled true
 
