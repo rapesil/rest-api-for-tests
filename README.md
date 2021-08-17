@@ -31,6 +31,8 @@ O projeto será inicializado na porta `8080`. Caso deseje inicializar em outra p
 
 Pronto! Você pode apontar seus testes para `http://localhost:8080`. 
 
+Você também pode verificar a documentação da API em `http://localhost:8080/swagger-ui.html`
+
 
 
 
