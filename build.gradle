@@ -52,7 +52,7 @@ jacocoTestCoverageVerification {
 	violationRules {
 		rule {
 			limit {
-				minimum = 0.8
+				minimum = 0.5
 			}
 		}
 	}
@@ -64,11 +64,11 @@ jacocoTestCoverageVerification {
 }
 
 dependencies {
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.5.3'
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.5.3'
-	implementation group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '2.5.3'
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.5.3'
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.5.3'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.4.4'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.4.4'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '2.4.4'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.4.4'
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.4.4'
 	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.26'
 	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '3.0.0'
 	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
