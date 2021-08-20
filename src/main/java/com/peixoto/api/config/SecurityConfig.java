@@ -23,14 +23,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .anyRequest()
-                .authenticated()
-                .and()
-                .httpBasic()
-                .and()
-                .formLogin()
-                .and()
-                .csrf().disable();
+            .antMatchers("/swagger-ui.html").permitAll()
+            .antMatchers("/books**").authenticated()
+            .and()
+            .httpBasic()
+            .and()
+            .formLogin()
+            .and()
+            .csrf().disable();
     }
 
     @Override
