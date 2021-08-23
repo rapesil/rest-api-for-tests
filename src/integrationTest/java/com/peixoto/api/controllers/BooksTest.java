@@ -1,7 +1,7 @@
 package com.peixoto.api.controllers;
 
-import com.peixoto.api.domain.Book;
 import com.peixoto.api.repository.BookRepository;
+import com.peixoto.api.utils.BookFactory;
 import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.AfterEach;
@@ -93,18 +93,12 @@ public class BooksTest {
 
     @Test
     void post_shouldInsertNewBook()  {
-        assertThat(bookRepository.findAll().size()).isEqualTo(2);
-        Book book = new Book();
-        book.setAuthor("Rafael Peixoto");
-        book.setTitle("Selenium WebDriver");
-        book.setBookCategory("Software Test");
-
         given()
             .log().all()
             .auth()
             .basic(VALID_USER_ADMIN, VALID_PASS_ADMIN)
             .contentType(ContentType.JSON)
-            .body(book)
+            .body(BookFactory.getBookWithoutId())
         .when()
             .post("/" )
         .then()
@@ -116,18 +110,12 @@ public class BooksTest {
 
     @Test
     void put_shouldReplaceABook() {
-        Book book = new Book();
-        book.setId(1L);
-        book.setAuthor("Rafael Peixoto");
-        book.setTitle("Selenium WebDriver");
-        book.setBookCategory("Software Test");
-
         given()
             .log().all()
             .auth()
             .basic(VALID_USER_ADMIN, VALID_PASS_ADMIN)
             .contentType(ContentType.JSON)
-            .body(book)
+            .body(BookFactory.getBookWithId())
         .when()
             .put("/" )
         .then()
