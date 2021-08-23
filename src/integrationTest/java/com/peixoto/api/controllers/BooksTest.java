@@ -1,7 +1,6 @@
 package com.peixoto.api.controllers;
 
-import com.github.tomakehurst.wiremock.WireMockServer;
-import com.github.tomakehurst.wiremock.client.WireMock;
+import com.peixoto.api.domain.Book;
 import com.peixoto.api.repository.BookRepository;
 import com.peixoto.api.utils.BookFactory;
 import io.restassured.http.ContentType;
@@ -16,12 +15,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootContextLoader;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlMatching;
 import static io.restassured.RestAssured.basePath;
 import static io.restassured.RestAssured.baseURI;
 import static io.restassured.RestAssured.given;
@@ -37,6 +40,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles("test")
 @TestPropertySource(locations = "classpath:application-test.yml")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@AutoConfigureWireMock(port = 0)
 public class BooksTest {
 
     @Autowired
@@ -48,20 +52,16 @@ public class BooksTest {
     private static final String VALID_USER_ADMIN = "admin1";
     private static final String VALID_PASS_ADMIN = "test";
     private static final String INVALID_PASS_ADMIN = "invalidPass";
-    WireMockServer wireMockServer = new WireMockServer(8081);
 
     @BeforeEach
     public void setup() {
         baseURI = "http://localhost";
         basePath = "books";
         port = localPort;
-        wireMockServer.start();
     }
 
     @AfterEach
     public void teardown() {
-        wireMockServer.stop();
-        System.out.println(bookRepository.findAll().size());
     }
 
     @ParameterizedTest
@@ -96,6 +96,24 @@ public class BooksTest {
         .then()
             .log().all()
             .statusCode(HttpStatus.SC_UNAUTHORIZED);
+    }
+
+    @Test
+    void getById_shouldReturnAnSpecificBook() {
+        final long VALID_ID = 1L;
+        Book book = given()
+            .auth().basic(VALID_USER_ADMIN, VALID_PASS_ADMIN)
+            .pathParam("id", VALID_ID)
+        .when()
+            .get("/{id}")
+        .then()
+            .statusCode(200)
+            .extract().body().as(Book.class);
+
+        assertThat(book.getId()).isEqualTo(1L);
+        assertThat(book.getTitle()).isEqualTo("BOOK TO BE REPLACED");
+        assertThat(book.getAuthor()).isEqualTo("AUTHOR TO BE REPLACED");
+        assertThat(book.getBookCategory()).isEqualTo("CATEGORY TO BE REPLACED");
     }
 
     @Test
@@ -156,7 +174,7 @@ public class BooksTest {
 
     @Test
     void getExternal_shouldReceveidData() {
-        WireMock.stubFor(WireMock.get(WireMock.urlMatching("reqres.in"))
+        stubFor(get(urlMatching("reqres.in"))
             .willReturn(aResponse().withStatus(200)));
 
         given()
@@ -169,7 +187,5 @@ public class BooksTest {
         .then()
             .statusCode(HttpStatus.SC_OK);
     }
-
-
 
 }

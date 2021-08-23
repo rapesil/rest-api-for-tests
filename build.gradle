@@ -69,19 +69,12 @@ jacocoTestCoverageVerification {
 }
 
 dependencies {
-//	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.4.4'
-//	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.4.4'
-//	implementation group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '2.4.4'
-//	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.4.4'
-//	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.4.4'
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-devtools'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
-
-//	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
 	implementation 'org.springframework.cloud:spring-cloud-starter-config'
 	implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
 	testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-stub-runner'
@@ -117,5 +110,8 @@ test {
 	testLogging {
 		events "passed", "skipped", "failed"
 	}
+}
 
+rootProject.tasks.named("processIntegrationTestResources") {
+	duplicatesStrategy = 'include'
 }
