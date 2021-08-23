@@ -3,7 +3,6 @@ package com.peixoto.api.services;
 import com.peixoto.api.domain.Book;
 import com.peixoto.api.exceptions.BadRequestException;
 import com.peixoto.api.repository.BookRepository;
-import com.peixoto.api.requests.BookPutRequestBody;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,10 +34,10 @@ public class BookService {
     }
 
     @Transactional(rollbackOn = Exception.class)
-    public void replace(BookPutRequestBody book) {
+    public void replace(Book book) {
         Book savedBook = findById(book.getId());
         savedBook.setTitle(book.getTitle());
-        savedBook.setBookCategory(book.getCategory());
+        savedBook.setBookCategory(book.getBookCategory());
         savedBook.setAuthor(book.getAuthor());
         savedBook.setId(book.getId());
         bookRepository.save(savedBook);

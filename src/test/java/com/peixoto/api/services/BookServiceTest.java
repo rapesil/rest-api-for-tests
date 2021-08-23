@@ -3,7 +3,6 @@ package com.peixoto.api.services;
 import com.peixoto.api.domain.Book;
 import com.peixoto.api.exceptions.BadRequestException;
 import com.peixoto.api.repository.BookRepository;
-import com.peixoto.api.requests.BookPutRequestBody;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,6 +10,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -70,7 +70,7 @@ public class BookServiceTest {
         savedBook.setBookCategory("Software Test");
         savedBook.setTitle("Selenium WebDriver");
 
-        BookPutRequestBody newBook = new BookPutRequestBody(
+        Book newBook = new Book(
                 1L,
                 "Agile Testing",
                 "Lisa Crispin",

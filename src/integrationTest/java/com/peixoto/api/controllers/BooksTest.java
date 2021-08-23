@@ -4,6 +4,7 @@ import com.peixoto.api.domain.Book;
 import com.peixoto.api.repository.BookRepository;
 import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -13,8 +14,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootContextLoader;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.TestPropertySource;
 
 import static io.restassured.RestAssured.basePath;
 import static io.restassured.RestAssured.baseURI;
@@ -27,7 +30,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ContextConfiguration(loader = SpringBootContextLoader.class)
 @ActiveProfiles("test")
-public class BookControllerTest {
+@TestPropertySource(locations = "classpath:application-test.yml")
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+public class BooksTest {
 
     @Autowired
     private BookRepository bookRepository;
@@ -44,6 +49,12 @@ public class BookControllerTest {
         baseURI = "http://localhost";
         basePath = "books";
         port = localPort;
+        System.out.println(bookRepository.findAll().size());
+    }
+
+    @AfterEach
+    public void teardown() {
+        System.out.println(bookRepository.findAll().size());
     }
 
     @ParameterizedTest
@@ -81,7 +92,8 @@ public class BookControllerTest {
     }
 
     @Test
-    void post()  {
+    void post_shouldInsertNewBook()  {
+        assertThat(bookRepository.findAll().size()).isEqualTo(2);
         Book book = new Book();
         book.setAuthor("Rafael Peixoto");
         book.setTitle("Selenium WebDriver");
@@ -98,6 +110,51 @@ public class BookControllerTest {
         .then()
             .log().all()
             .statusCode(HttpStatus.SC_CREATED);
+
+        assertThat(bookRepository.findAll().size()).isEqualTo(3);
+    }
+
+    @Test
+    void put_shouldReplaceABook() {
+        Book book = new Book();
+        book.setId(1L);
+        book.setAuthor("Rafael Peixoto");
+        book.setTitle("Selenium WebDriver");
+        book.setBookCategory("Software Test");
+
+        given()
+            .log().all()
+            .auth()
+            .basic(VALID_USER_ADMIN, VALID_PASS_ADMIN)
+            .contentType(ContentType.JSON)
+            .body(book)
+        .when()
+            .put("/" )
+        .then()
+            .log().all()
+            .statusCode(HttpStatus.SC_NO_CONTENT);
+
+        assertThat(bookRepository.findAll().size()).isEqualTo(2);
+        assertThat(bookRepository.findById(1L).get().getTitle()).isEqualTo("Selenium WebDriver");
+        assertThat(bookRepository.findById(1L).get().getAuthor()).isEqualTo("Rafael Peixoto");
+        assertThat(bookRepository.findById(1L).get().getBookCategory()).isEqualTo("Software Test");
+    }
+
+    @Test
+    void delete_shouldRemoveBook() {
+        final Long ID_TO_BE_DELETED = 2L;
+
+        given()
+            .log().all()
+            .auth()
+            .basic(VALID_USER_ADMIN, VALID_PASS_ADMIN)
+            .contentType(ContentType.JSON)
+            .pathParam("id", ID_TO_BE_DELETED)
+        .when()
+            .delete("/{id}")
+        .then()
+            .log().all()
+            .statusCode(HttpStatus.SC_NO_CONTENT);
 
         assertThat(bookRepository.findAll().size()).isEqualTo(1);
     }
