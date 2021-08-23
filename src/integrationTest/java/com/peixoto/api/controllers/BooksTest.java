@@ -1,5 +1,7 @@
 package com.peixoto.api.controllers;
 
+import com.github.tomakehurst.wiremock.WireMockServer;
+import com.github.tomakehurst.wiremock.client.WireMock;
 import com.peixoto.api.repository.BookRepository;
 import com.peixoto.api.utils.BookFactory;
 import io.restassured.http.ContentType;
@@ -19,12 +21,15 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static io.restassured.RestAssured.basePath;
 import static io.restassured.RestAssured.baseURI;
 import static io.restassured.RestAssured.given;
 import static io.restassured.RestAssured.port;
 import static io.restassured.RestAssured.when;
 import static org.assertj.core.api.Assertions.assertThat;
+
+
 
 @Tag("integrationTest")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -43,17 +48,19 @@ public class BooksTest {
     private static final String VALID_USER_ADMIN = "admin1";
     private static final String VALID_PASS_ADMIN = "test";
     private static final String INVALID_PASS_ADMIN = "invalidPass";
+    WireMockServer wireMockServer = new WireMockServer(8081);
 
     @BeforeEach
     public void setup() {
         baseURI = "http://localhost";
         basePath = "books";
         port = localPort;
-        System.out.println(bookRepository.findAll().size());
+        wireMockServer.start();
     }
 
     @AfterEach
     public void teardown() {
+        wireMockServer.stop();
         System.out.println(bookRepository.findAll().size());
     }
 
@@ -145,6 +152,22 @@ public class BooksTest {
             .statusCode(HttpStatus.SC_NO_CONTENT);
 
         assertThat(bookRepository.findAll().size()).isEqualTo(1);
+    }
+
+    @Test
+    void getExternal_shouldReceveidData() {
+        WireMock.stubFor(WireMock.get(WireMock.urlMatching("reqres.in"))
+            .willReturn(aResponse().withStatus(200)));
+
+        given()
+            .log().all()
+            .auth()
+            .basic(VALID_USER_ADMIN, VALID_PASS_ADMIN)
+            .contentType(ContentType.JSON)
+        .when()
+            .get("/external")
+        .then()
+            .statusCode(HttpStatus.SC_OK);
     }
 
 

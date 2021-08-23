@@ -21,7 +21,7 @@ configurations {
 
 dependencies {
     integrationTestCompileOnly 'org.projectlombok:lombok:1.18.16'
-    integrationTestAnnotationProcessor 'org.projectlombok:lombok:1.18.16'\
+    integrationTestAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
 }
 
 idea {

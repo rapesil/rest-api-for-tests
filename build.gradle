@@ -1,7 +1,12 @@
-
+buildscript {
+	ext {
+		set('springCloudVersion', "2020.0.2")
+	}
+}
 
 plugins {
-	id 'org.springframework.boot' version '2.4.3'
+
+	id 'org.springframework.boot' version '2.5.0'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
 	id 'checkstyle'
@@ -29,7 +34,7 @@ def excludeSourceDirs = [
 		'**/handler/**',
 		'**/requests/**',
 		'**/domain/**',
-		'**/TestingWebApplication.java',
+		'*/TestingWebApplication.java',
 ]
 
 jacocoTestReport {
@@ -64,27 +69,45 @@ jacocoTestCoverageVerification {
 }
 
 dependencies {
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.4.4'
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.4.4'
-	implementation group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '2.4.4'
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.4.4'
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.4.4'
+//	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web', version: '2.4.4'
+//	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.4.4'
+//	implementation group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '2.4.4'
+//	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '2.4.4'
+//	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation', version: '2.4.4'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-devtools'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+
+//	implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+	implementation 'org.springframework.cloud:spring-cloud-starter-config'
+	implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
+	testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-stub-runner'
+
+
 	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.26'
 	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '3.0.0'
 	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
 	implementation group: 'io.rest-assured', name: 'rest-assured-all', version: '4.1.2'
-
+	testCompile "com.github.tomakehurst:wiremock-jre8:2.30.1"
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
 	testImplementation group: 'org.springframework.security', name: 'spring-security-test', version: '5.5.1'
 	testImplementation "com.h2database:h2"
 	testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.20.2'
 	testImplementation group: 'io.rest-assured', name: 'rest-assured', version: '4.1.2'
-
 	compileOnly 'org.projectlombok:lombok:1.18.16'
 	annotationProcessor 'org.projectlombok:lombok:1.18.16'
 
 	testCompileOnly 'org.projectlombok:lombok:1.18.16'
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
+}
+
+dependencyManagement {
+	imports {
+		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+	}
 }
 
 test {
