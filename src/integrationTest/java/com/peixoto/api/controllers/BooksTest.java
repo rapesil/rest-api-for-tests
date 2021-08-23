@@ -5,7 +5,6 @@ import com.peixoto.api.repository.BookRepository;
 import com.peixoto.api.utils.BookFactory;
 import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
@@ -58,10 +57,6 @@ public class BooksTest {
         baseURI = "http://localhost";
         basePath = "books";
         port = localPort;
-    }
-
-    @AfterEach
-    public void teardown() {
     }
 
     @ParameterizedTest

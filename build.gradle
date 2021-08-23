@@ -34,7 +34,7 @@ def excludeSourceDirs = [
 		'**/handler/**',
 		'**/requests/**',
 		'**/domain/**',
-		'*/TestingWebApplication.java',
+		'**/TestingWebApplication*',
 ]
 
 jacocoTestReport {
