@@ -2,7 +2,6 @@ package com.peixoto.api.services;
 
 import com.peixoto.api.domain.Users;
 import com.peixoto.api.repository.UserRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -10,6 +9,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @ExtendWith(MockitoExtension.class)
 public class UserDetailServiceTest {
@@ -25,12 +27,12 @@ public class UserDetailServiceTest {
         Mockito.when(mockUserRepository.findByUsername(Mockito.anyString()))
                 .thenReturn(new Users());
 
-        Assertions.assertThat(userDetailService.loadUserByUsername("username")).isNotNull();
+        assertThat(userDetailService.loadUserByUsername("username")).isNotNull();
     }
 
     @Test
     void loadUserByUsername_shouldThrowUsernameNotFoundException() {
-        Assertions.assertThatThrownBy(() -> userDetailService.loadUserByUsername("username"))
+        assertThatThrownBy(() -> userDetailService.loadUserByUsername("username"))
                 .isInstanceOf(UsernameNotFoundException.class)
                 .hasMessage("User username not found");
     }
