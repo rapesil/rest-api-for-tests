@@ -2,6 +2,9 @@ buildscript {
 	ext {
 		set('springCloudVersion', "2020.0.2")
 	}
+	dependencies {
+		classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.6.0'
+	}
 }
 
 plugins {
@@ -12,9 +15,12 @@ plugins {
 	id 'checkstyle'
 	id 'application'
 	id 'idea'
+//	id 'info.solidsoft.pitest' version '1.6.0'
 }
 
 apply plugin: 'jacoco'
+apply plugin: 'info.solidsoft.pitest'
+
 apply from: "$rootDir/gradle/integrationTest.gradle"
 
 group = 'com.peixoto.api'
@@ -57,7 +63,7 @@ jacocoTestCoverageVerification {
 	violationRules {
 		rule {
 			limit {
-				minimum = 0.5
+				minimum = 0.6
 			}
 		}
 	}
@@ -77,19 +83,21 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.cloud:spring-cloud-starter-config'
 	implementation 'org.springframework.cloud:spring-cloud-starter-bootstrap'
-	testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-stub-runner'
-
-
 	implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.26'
 	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '3.0.0'
 	implementation group: 'io.springfox', name: 'springfox-boot-starter', version: '3.0.0'
 	implementation group: 'io.rest-assured', name: 'rest-assured-all', version: '4.1.2'
+
 	testCompile "com.github.tomakehurst:wiremock-jre8:2.30.1"
+	testCompile 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.4.0'
+
+	testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-stub-runner'
 	testImplementation('org.springframework.boot:spring-boot-starter-test')
 	testImplementation group: 'org.springframework.security', name: 'spring-security-test', version: '5.5.1'
 	testImplementation "com.h2database:h2"
 	testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.20.2'
 	testImplementation group: 'io.rest-assured', name: 'rest-assured', version: '4.1.2'
+
 	compileOnly 'org.projectlombok:lombok:1.18.16'
 	annotationProcessor 'org.projectlombok:lombok:1.18.16'
 
@@ -101,6 +109,16 @@ dependencyManagement {
 	imports {
 		mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
 	}
+}
+
+pitest {
+	targetClasses = ['com.peixoto.api*']
+	threads = 4
+	outputFormats = ['XML', 'HTML']
+	timestampedReports = false
+	junit5PluginVersion = '0.12'
+	testSourceSets.set([sourceSets.test, sourceSets.integrationTest])
+	jvmArgs.set(['-Xmx4096m'])
 }
 
 test {
