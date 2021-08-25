@@ -111,7 +111,7 @@ dependencyManagement {
 }
 
 pitest {
-	targetClasses = ['com.peixoto.api*']
+	targetClasses = ['com.peixoto.api.controllers*', 'com.peixoto.api.service*']
 	threads = 4
 	outputFormats = ['XML', 'HTML']
 	timestampedReports = false
