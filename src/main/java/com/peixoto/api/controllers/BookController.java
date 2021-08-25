@@ -1,6 +1,8 @@
 package com.peixoto.api.controllers;
 
 import com.peixoto.api.domain.Book;
+import com.peixoto.api.requests.BookPostRequestBody;
+import com.peixoto.api.requests.BookPutRequestBody;
 import com.peixoto.api.services.BookService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -49,7 +51,7 @@ public class BookController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Book> save(@NotNull @Valid @RequestBody Book book)  {
+    public ResponseEntity<Book> save(@NotNull @Valid @RequestBody BookPostRequestBody book)  {
         return new ResponseEntity<>(bookService.save(book), HttpStatus.CREATED);
     }
 
@@ -74,7 +76,7 @@ public class BookController {
     @PreAuthorize("hasRole('USER')" +
             "|| hasRole('ADMIN')"
     )
-    public ResponseEntity<Void> update(@NotNull @RequestBody Book book) {
+    public ResponseEntity<Void> update(@NotNull @RequestBody BookPutRequestBody book) {
         bookService.replace(book);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

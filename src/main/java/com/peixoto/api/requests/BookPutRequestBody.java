@@ -12,7 +12,10 @@ import javax.validation.constraints.NotNull;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BookPostRequestBody {
+public class BookPutRequestBody {
+    @NotNull(message = "ID cannot be null")
+    private long id;
+
     @NotNull(message = "Title cannot be null")
     @NotEmpty(message = "Title cannot be empty")
     private String title;

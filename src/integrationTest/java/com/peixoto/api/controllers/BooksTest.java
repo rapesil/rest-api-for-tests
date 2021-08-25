@@ -31,14 +31,11 @@ import static io.restassured.RestAssured.port;
 import static io.restassured.RestAssured.when;
 import static org.assertj.core.api.Assertions.assertThat;
 
-
-
 @Tag("integrationTest")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ContextConfiguration(loader = SpringBootContextLoader.class)
 @ActiveProfiles("test")
 @TestPropertySource(locations = "classpath:application-test.yml")
-@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 @AutoConfigureWireMock(port = 0)
 public class BooksTest {
 
@@ -111,6 +108,7 @@ public class BooksTest {
         assertThat(book.getBookCategory()).isEqualTo("CATEGORY TO BE REPLACED");
     }
 
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     @Test
     void post_shouldInsertNewBook()  {
         given()
@@ -129,6 +127,7 @@ public class BooksTest {
     }
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.BEFORE_METHOD)
     void put_shouldReplaceABook() {
         given()
             .log().all()
@@ -149,6 +148,21 @@ public class BooksTest {
     }
 
     @Test
+    void put_shouldThrowNotFound_whenBookDoesNotExists() {
+        given()
+            .log().all()
+            .auth()
+            .basic(VALID_USER_ADMIN, VALID_PASS_ADMIN)
+            .contentType(ContentType.JSON)
+            .body(BookFactory.getBookWithInvalidId())
+        .when()
+            .put("/" )
+        .then()
+            .log().all()
+            .statusCode(HttpStatus.SC_BAD_REQUEST);
+    }
+
+    @Test
     void delete_shouldRemoveBook() {
         final Long ID_TO_BE_DELETED = 2L;
 
@@ -165,6 +179,23 @@ public class BooksTest {
             .statusCode(HttpStatus.SC_NO_CONTENT);
 
         assertThat(bookRepository.findAll().size()).isEqualTo(1);
+    }
+
+    @Test
+    void delete_shouldThrowBadRequest_whenInvalidIdIsSent() {
+        final Long INVALID_ID_TO_BE_DELETED = 100L;
+
+        given()
+            .log().all()
+            .auth()
+            .basic(VALID_USER_ADMIN, VALID_PASS_ADMIN)
+            .contentType(ContentType.JSON)
+            .pathParam("id", INVALID_ID_TO_BE_DELETED)
+        .when()
+            .delete("/{id}")
+        .then()
+            .log().all()
+            .statusCode(HttpStatus.SC_BAD_REQUEST);
     }
 
     @Test

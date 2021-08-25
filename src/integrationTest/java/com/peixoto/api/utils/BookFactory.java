@@ -20,4 +20,13 @@ public class BookFactory {
         book.setBookCategory("Software Test");
         return book;
     }
+
+    public static Book getBookWithInvalidId() {
+        Book book = new Book();
+        book.setId(100L);
+        book.setAuthor("Rafael Peixoto");
+        book.setTitle("Selenium WebDriver");
+        book.setBookCategory("Software Test");
+        return book;
+    }
 }
