@@ -21,14 +21,8 @@ apply plugin: 'jacoco'
 apply plugin: 'info.solidsoft.pitest'
 apply from: "$rootDir/gradle/integrationTest.gradle"
 
-group = 'com.peixoto.api'
-version = '0.1'
-sourceCompatibility = '11'
-targetCompatibility = '11'
-
-repositories {
-	mavenCentral()
-}
+check.dependsOn jacocoTestCoverageVerification
+test.finalizedBy jacocoTestReport
 
 def excludeSourceDirs = [
 		'**/config/**',
@@ -38,38 +32,63 @@ def excludeSourceDirs = [
 		'**/handler/**',
 		'**/requests/**',
 		'**/domain/**',
-		'**/TestingWebApplication*',
+		'**/TestingWebApplication*'
 ]
 
-jacocoTestReport {
-	dependsOn(test)
-	reports {
-		html.enabled true
-
-	}
-	afterEvaluate {
-		classDirectories.setFrom(files(classDirectories.files.collect {
-			fileTree(dir: it, exclude: excludeSourceDirs)
-		}))
-	}
-	getExecutionData().setFrom(fileTree(buildDir).include("/jacoco/*.exec"))
+tasks.withType(Test) {
+	finalizedBy jacocoTestReport
 }
 
-test.finalizedBy jacocoTestCoverageVerification
+// Configure the report to look for executionData generated during the test and integrationTest task
+jacocoTestReport {
+//	executionData { tasks.withType(Test).findAll { it.jacoco.destinationFile.exists() }*.jacoco.destinationFile }
+	reports {
+		html.enabled true
+		html.destination file("${project.buildDir}/reports/jacoco/all-tests/html")
+	}
+}
+
 jacocoTestCoverageVerification {
-	dependsOn(jacocoTestReport)
+	executionData {
+		tasks.withType(Test).findAll {
+			it.jacoco.destinationFile.exists()
+		}*.jacoco.destinationFile
+	}
 	violationRules {
 		rule {
+			element = 'CLASS'
 			limit {
-				minimum = 0.6
+				counter = 'LINE'
+				value = 'COVEREDRATIO'
+				minimum = 0.8
 			}
+			excludes = [
+					'com.peixoto.api.config.*',
+					'com.peixoto.api.dto.*',
+					'com.peixoto.api.domain.*',
+					'com.peixoto.api.exceptions.*',
+					'com.peixoto.api.handler.*',
+					'com.peixoto.api.requests.*',
+					'com.peixoto.api.repository.*',
+					'com.peixoto.api.swagger.*',
+					'com.peixoto.api.TestingWebApplication*'
+			]
+		}
+		afterEvaluate {
+			classDirectories.setFrom(files(classDirectories.files.collect {
+				fileTree(dir: it, exclude: excludeSourceDirs)
+			}))
 		}
 	}
-	afterEvaluate {
-		classDirectories.setFrom(files(classDirectories.files.collect {
-			fileTree(dir: it, exclude: excludeSourceDirs)
-		}))
-	}
+}
+
+group = 'com.peixoto.api'
+version = '0.1'
+sourceCompatibility = '11'
+targetCompatibility = '11'
+
+repositories {
+	mavenCentral()
 }
 
 dependencies {
@@ -136,3 +155,4 @@ rootProject.tasks.named("processIntegrationTestResources") {
 tasks.withType(Jar) {
 	destinationDir = file("$rootDir/jar")
 }
+

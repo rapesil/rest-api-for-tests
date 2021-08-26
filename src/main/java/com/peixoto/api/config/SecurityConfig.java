@@ -1,6 +1,7 @@
 package com.peixoto.api.config;
 
 import com.peixoto.api.services.UserDetailService;
+import lombok.Generated;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @Log4j2
 @RequiredArgsConstructor
+@Generated
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailService userDetailService;
 
