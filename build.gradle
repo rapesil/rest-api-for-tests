@@ -23,7 +23,7 @@ apply plugin: 'info.solidsoft.pitest'
 apply from: "$rootDir/gradle/integrationTest.gradle"
 
 group = 'com.peixoto.api'
-version = '0.0.1-SNAPSHOT'
+version = '0.1'
 sourceCompatibility = '11'
 targetCompatibility = '11'
 

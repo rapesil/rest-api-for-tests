@@ -37,6 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         log.info("Password enconded {}", passwordEncoder.encode("passNormalUser"));
+        log.info("Password enconded {}", passwordEncoder.encode("passAdmin"));
 
         auth.inMemoryAuthentication()
                 .withUser("admin1")

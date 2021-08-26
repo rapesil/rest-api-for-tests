@@ -1,7 +1,26 @@
-version: "3.1"
+version: "3"
 services:
+  app:
+    image: rest-service:latest
+    container_name: rest-service
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    ports:
+      - 8080:8080
+    networks:
+      - spring-cloud-network
+    depends_on:
+      - db
+    environment:
+      - ADDITIONAL_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m
+      - PROFILE=dev
+      - SLEEP_LENGTH=5
+
+
   db:
     image: mysql
+    restart: on-failure
     container_name: myapi_mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
@@ -11,6 +30,14 @@ services:
     - myapi_data:/var/lib/mysql
     security_opt:
       - seccomp:unconfined
+    networks:
+      - spring-cloud-network
+
+
 
 volumes:
   myapi_data:
+
+networks:
+  spring-cloud-network:
+    driver: bridge
