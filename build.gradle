@@ -19,7 +19,6 @@ plugins {
 
 apply plugin: 'jacoco'
 apply plugin: 'info.solidsoft.pitest'
-
 apply from: "$rootDir/gradle/integrationTest.gradle"
 
 group = 'com.peixoto.api'
@@ -131,4 +130,9 @@ test {
 
 rootProject.tasks.named("processIntegrationTestResources") {
 	duplicatesStrategy = 'include'
+}
+
+
+tasks.withType(Jar) {
+	destinationDir = file("$rootDir/jar")
 }
