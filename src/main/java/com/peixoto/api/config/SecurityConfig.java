@@ -1,6 +1,7 @@
 package com.peixoto.api.config;
 
 import com.peixoto.api.services.UserDetailService;
+import lombok.Generated;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @Log4j2
 @RequiredArgsConstructor
+@Generated
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserDetailService userDetailService;
 
@@ -37,6 +39,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
         log.info("Password enconded {}", passwordEncoder.encode("passNormalUser"));
+        log.info("Password enconded {}", passwordEncoder.encode("passAdmin"));
 
         auth.inMemoryAuthentication()
                 .withUser("admin1")

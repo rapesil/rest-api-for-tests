@@ -19,58 +19,54 @@ plugins {
 
 apply plugin: 'jacoco'
 apply plugin: 'info.solidsoft.pitest'
-
 apply from: "$rootDir/gradle/integrationTest.gradle"
 
+check.dependsOn jacocoTestCoverageVerification
+test.finalizedBy jacocoTestReport
+
+tasks.withType(Test) {
+	finalizedBy jacocoTestReport
+}
+
+jacocoTestReport {
+	reports {
+		html.enabled true
+		html.destination file("${project.buildDir}/reports/jacoco/all-tests/html")
+	}
+}
+
+jacocoTestCoverageVerification {
+	getExecutionData().setFrom(fileTree(buildDir).include("/jacoco/integrationTest.exec"))
+	violationRules {
+		rule {
+			element = 'CLASS'
+			limit {
+				counter = 'LINE'
+				value = 'COVEREDRATIO'
+				minimum = 0.8
+			}
+			excludes = [
+					'com.peixoto.api.config.*',
+					'com.peixoto.api.dto.*',
+					'com.peixoto.api.domain.*',
+					'com.peixoto.api.exceptions.*',
+					'com.peixoto.api.handler.*',
+					'com.peixoto.api.requests.*',
+					'com.peixoto.api.repository.*',
+					'com.peixoto.api.swagger.*',
+					'com.peixoto.api.TestingWebApplication*'
+			]
+		}
+	}
+}
+
 group = 'com.peixoto.api'
-version = '0.0.1-SNAPSHOT'
+version = '0.1'
 sourceCompatibility = '11'
 targetCompatibility = '11'
 
 repositories {
 	mavenCentral()
-}
-
-def excludeSourceDirs = [
-		'**/config/**',
-		'**/swagger/**',
-		'**/exceptions/**',
-		'**/repository/**',
-		'**/handler/**',
-		'**/requests/**',
-		'**/domain/**',
-		'**/TestingWebApplication*',
-]
-
-jacocoTestReport {
-	dependsOn(test)
-	reports {
-		html.enabled true
-
-	}
-	afterEvaluate {
-		classDirectories.setFrom(files(classDirectories.files.collect {
-			fileTree(dir: it, exclude: excludeSourceDirs)
-		}))
-	}
-	getExecutionData().setFrom(fileTree(buildDir).include("/jacoco/*.exec"))
-}
-
-test.finalizedBy jacocoTestCoverageVerification
-jacocoTestCoverageVerification {
-	dependsOn(jacocoTestReport)
-	violationRules {
-		rule {
-			limit {
-				minimum = 0.6
-			}
-		}
-	}
-	afterEvaluate {
-		classDirectories.setFrom(files(classDirectories.files.collect {
-			fileTree(dir: it, exclude: excludeSourceDirs)
-		}))
-	}
 }
 
 dependencies {
@@ -132,3 +128,9 @@ test {
 rootProject.tasks.named("processIntegrationTestResources") {
 	duplicatesStrategy = 'include'
 }
+
+
+tasks.withType(Jar) {
+	destinationDir = file("$rootDir/jar")
+}
+

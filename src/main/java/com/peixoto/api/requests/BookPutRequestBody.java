@@ -20,7 +20,7 @@ public class BookPutRequestBody {
     @NotEmpty(message = "Title cannot be empty")
     private String title;
 
-    @NotEmpty(message = "Author cannot be null")
+    @NotEmpty(message = "Author cannot be empty")
     @NotNull(message = "Author cannot be null")
     private String author;
 

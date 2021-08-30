@@ -1,22 +1,16 @@
 package com.peixoto.api.controllers;
 
+import com.peixoto.api.BaseIntegrationTest;
 import com.peixoto.api.domain.Book;
 import com.peixoto.api.repository.BookRepository;
 import com.peixoto.api.utils.BookFactory;
 import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.cloud.contract.wiremock.AutoConfigureWireMock;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.jdbc.Sql;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
@@ -29,19 +23,10 @@ import static io.restassured.RestAssured.port;
 import static io.restassured.RestAssured.when;
 import static org.assertj.core.api.Assertions.assertThat;
 
-@Tag("integrationTest")
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@ActiveProfiles("test")
-@TestPropertySource(locations = "classpath:application-test.yml")
-@AutoConfigureWireMock(port = 0)
-@Sql(value = {"/schema.sql", "/data.sql"}, executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-public class BooksTest {
+public class BooksTest extends BaseIntegrationTest {
 
     @Autowired
     private BookRepository bookRepository;
-
-    @LocalServerPort
-    private int localPort;
 
     private static final String VALID_USER_ADMIN = "admin1";
     private static final String VALID_PASS_ADMIN = "test";
@@ -51,8 +36,9 @@ public class BooksTest {
     public void setup() {
         baseURI = "http://localhost";
         basePath = "books";
-        port = localPort;
+        port = getPort();
     }
+
 
     @ParameterizedTest
     @CsvFileSource(resources = "/users.csv", numLinesToSkip = 1)

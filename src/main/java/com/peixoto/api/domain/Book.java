@@ -2,6 +2,7 @@ package com.peixoto.api.domain;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Generated;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
@@ -15,6 +16,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Generated
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
