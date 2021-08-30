@@ -39,6 +39,7 @@ public class BooksTest extends BaseIntegrationTest {
         port = getPort();
     }
 
+
     @ParameterizedTest
     @CsvFileSource(resources = "/users.csv", numLinesToSkip = 1)
     void getAll_shouldListAllBooks_whenHavePermission(String user, String pass) throws Exception {
