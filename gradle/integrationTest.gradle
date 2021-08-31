@@ -32,12 +32,6 @@ idea {
     }
 }
 
-jacocoTestReport {
-    executionData tasks.withType(Test)
-}
-
-check.dependsOn 'jacocoTestReport'
-
 task integrationTest(type: Test) {
     group = 'verification'
 
@@ -61,5 +55,3 @@ task integrationTest(type: Test) {
     check.dependsOn it
     shouldRunAfter test
 }
-
-check.dependsOn 'integrationTest'

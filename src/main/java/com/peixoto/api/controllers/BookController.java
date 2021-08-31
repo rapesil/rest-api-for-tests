@@ -51,7 +51,7 @@ public class BookController {
 
     @PostMapping
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Book> save(@NotNull @Valid @RequestBody BookPostRequestBody book)  {
+    public ResponseEntity<Book> insertNewBook(@NotNull @Valid @RequestBody BookPostRequestBody book)  {
         return new ResponseEntity<>(bookService.save(book), HttpStatus.CREATED);
     }
 
