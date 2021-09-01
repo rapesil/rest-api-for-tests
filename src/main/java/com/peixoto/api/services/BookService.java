@@ -8,7 +8,9 @@ import com.peixoto.api.requests.BookPutRequestBody;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -57,5 +59,12 @@ public class BookService {
     public void remove(long id) {
         findById(id);
         bookRepository.deleteById(id);
+    }
+
+    public String getExternalData() {
+        RestTemplate restTemplate = new RestTemplate();
+        String fooResourceUrl = "https://reqres.in/api/users?page=2";
+        ResponseEntity<String> forEntity = restTemplate.getForEntity(fooResourceUrl, String.class);
+        return forEntity.getBody();
     }
 }

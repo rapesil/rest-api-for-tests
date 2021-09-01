@@ -1,4 +1,7 @@
 [![Java CI with Gradle](https://github.com/rapesil/rest-api-for-tests/actions/workflows/ci.yml/badge.svg)](https://github.com/rapesil/rest-api-for-tests/actions/workflows/ci.yml)
+[![Coverage](.github/badges/jacoco.svg)](https://github.com/rapesil/rest-api-for-tests/actions/workflows/cy.yml)
+![Coverage](.github/badges/jacoco.svg)
+
 # REST-API-FOR-TESTS
 
 API simples para:

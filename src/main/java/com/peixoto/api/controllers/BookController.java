@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -56,11 +55,8 @@ public class BookController {
     }
 
     @GetMapping("/external")
-    public ResponseEntity externalApi() {
-        RestTemplate restTemplate = new RestTemplate();
-        String fooResourceUrl = "https://reqres.in/api/users?page=2";
-        ResponseEntity<String> response = restTemplate.getForEntity(fooResourceUrl, String.class);
-        return response;
+    public ResponseEntity<String> externalApi() {
+        return new ResponseEntity<String>(bookService.getExternalData(), HttpStatus.valueOf(org.apache.http.HttpStatus.SC_OK));
     }
 
     @DeleteMapping("/{id}")

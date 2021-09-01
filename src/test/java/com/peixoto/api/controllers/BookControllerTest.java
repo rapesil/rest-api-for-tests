@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.peixoto.api.domain.Book;
 import com.peixoto.api.exceptions.BadRequestException;
+import com.peixoto.api.requests.BookPostRequestBody;
 import com.peixoto.api.services.BookService;
 import org.apache.http.HttpStatus;
 import org.assertj.core.api.Assertions;
@@ -32,7 +33,10 @@ public class BookControllerTest {
     private BookController bookController;
 
     @Mock
-    private BookService bookService;
+    private BookService mockBookService;
+
+    @Mock
+    private Book mockBook;
 
     private JacksonTester<Book> bookJacksonTester;
 
@@ -44,7 +48,7 @@ public class BookControllerTest {
 
     @Test
     void listAllBooks_successfullyOneBook() throws Exception {
-        Mockito.when(bookService.findAll()).thenReturn(List.of(new Book()));
+        Mockito.when(mockBookService.findAll()).thenReturn(List.of(new Book()));
 
         MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.get("/books"))
             .andReturn().getResponse();
@@ -58,7 +62,7 @@ public class BookControllerTest {
 
     @Test
     void listAllBooks_successfullyALotOfBooks() throws Exception {
-        Mockito.when(bookService.findAll()).thenReturn(List.of(new Book(),
+        Mockito.when(mockBookService.findAll()).thenReturn(List.of(new Book(),
             new Book(), new Book()));
 
         MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.get("/books"))
@@ -73,7 +77,7 @@ public class BookControllerTest {
 
     @Test
     void listAllBooks_noBooksFound() throws Exception {
-        Mockito.when(bookService.findAll()).thenReturn(null);
+        Mockito.when(mockBookService.findAll()).thenReturn(null);
 
         MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.get("/books"))
             .andReturn().getResponse();
@@ -86,7 +90,7 @@ public class BookControllerTest {
     void listBookById_validI_shouldReturnBook() throws Exception {
         Book book = new Book(1L, "title", "author", "category");
 
-        Mockito.when(bookService.findById(1L)).thenReturn(book);
+        Mockito.when(mockBookService.findById(1L)).thenReturn(book);
 
         MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.get("/books/1"))
             .andReturn().getResponse();
@@ -100,7 +104,7 @@ public class BookControllerTest {
 
     @Test
     void listBookById_invalidI_throwNotFoundException() throws Exception {
-        Mockito.when(bookService.findById(1L)).thenThrow(new BadRequestException("Book not found"));
+        Mockito.when(mockBookService.findById(1L)).thenThrow(new BadRequestException("Book not found"));
 
         MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.get("/books/1"))
             .andReturn().getResponse();
@@ -112,6 +116,22 @@ public class BookControllerTest {
     void insertNewBook_successfully() throws Exception {
         Book book = new Book(1L, "title", "author", "category");
         String bookAsString = new ObjectMapper().writeValueAsString(book);
+
+        MockHttpServletResponse response = mockMvc.perform(
+            MockMvcRequestBuilders.post("/books")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(bookAsString))
+            .andReturn().getResponse();
+
+        Assertions.assertThat(response.getStatus()).isEqualTo(HttpStatus.SC_CREATED);
+    }
+
+    @Test
+    void insertNewBook_successfully_0() throws Exception {
+        BookPostRequestBody book = new BookPostRequestBody("title", "author", "category");
+        String bookAsString = new ObjectMapper().writeValueAsString(book);
+
+        Mockito.when(mockBookService.save(book)).thenReturn(null);
 
         MockHttpServletResponse response = mockMvc.perform(
             MockMvcRequestBuilders.post("/books")
@@ -141,6 +161,28 @@ public class BookControllerTest {
             .andReturn().getResponse();
 
         Assertions.assertThat(response.getStatus()).isEqualTo(HttpStatus.SC_NO_CONTENT);
+    }
+
+    @Test
+    void external_returnValue() throws Exception {
+        Mockito.when(mockBookService.getExternalData()).thenReturn("Hello World");
+
+        MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.get("/books/external"))
+            .andReturn().getResponse();
+
+        Assertions.assertThat(response.getStatus()).isEqualTo(HttpStatus.SC_OK);
+        Assertions.assertThat(response.getContentAsString()).isEqualTo("Hello World");
+    }
+
+    @Test
+    void external_returnNull() throws Exception {
+        Mockito.when(mockBookService.getExternalData()).thenReturn(null);
+
+        MockHttpServletResponse response = mockMvc.perform(MockMvcRequestBuilders.get("/books/external"))
+            .andReturn().getResponse();
+
+        Assertions.assertThat(response.getStatus()).isEqualTo(HttpStatus.SC_OK);
+        Assertions.assertThat(response.getContentAsString()).isEmpty();
     }
 
 }
