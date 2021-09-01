@@ -15,6 +15,7 @@ plugins {
 	id 'checkstyle'
 	id 'application'
 	id 'idea'
+	id 'groovy'
 }
 
 apply plugin: 'jacoco'
@@ -81,7 +82,7 @@ dependencies {
 
 	testCompile "com.github.tomakehurst:wiremock-jre8:2.30.1"
 	testCompile 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.4.0'
-
+	testImplementation 'org.spockframework:spock-core:2.0-groovy-3.0'
 	testImplementation 'io.qameta.allure:allure-junit5:2.14.0'
 	testImplementation 'org.springframework.cloud:spring-cloud-starter-contract-stub-runner'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
@@ -89,9 +90,13 @@ dependencies {
 	testImplementation "com.h2database:h2"
 	testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.20.2'
 	testImplementation group: 'io.rest-assured', name: 'rest-assured', version: '4.1.2'
-
+	testImplementation 'org.codehaus.groovy:groovy-all:3.0.8'
 	compileOnly 'org.projectlombok:lombok:1.18.16'
 	annotationProcessor 'org.projectlombok:lombok:1.18.16'
+
+	testImplementation( 'com.athaydes:spock-reports:2.0-groovy-3.0' ) {
+		transitive = false // this avoids affecting your version of Groovy/Spock
+	}
 
 	testCompileOnly 'org.projectlombok:lombok:1.18.16'
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
@@ -125,7 +130,6 @@ test {
 rootProject.tasks.named("processIntegrationTestResources") {
 	duplicatesStrategy = 'include'
 }
-
 
 tasks.withType(Jar) {
 	destinationDir = file("$rootDir/jar")
