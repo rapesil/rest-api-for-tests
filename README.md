@@ -1,6 +1,4 @@
 [![Java CI with Gradle](https://github.com/rapesil/rest-api-for-tests/actions/workflows/ci.yml/badge.svg)](https://github.com/rapesil/rest-api-for-tests/actions/workflows/ci.yml)
-[![Coverage](.github/badges/jacoco.svg)](https://github.com/rapesil/rest-api-for-tests/actions/workflows/cy.yml)
-![Coverage](.github/badges/jacoco.svg)
 
 # REST-API-FOR-TESTS
 
@@ -16,21 +14,18 @@ API simples para:
 
 ## Executando o projeto
 
-Apesar do meu foco com esse projeto ser trabalhar com Java, você pode utilizar essa API para treinar testes utilizando qualquer outra linguagem/ferramenta. 
+Apesar do meu foco com esse projeto ser trabalhar com Java, você pode utilizar essa API para treinar testes utilizando 
+qualquer outra linguagem/ferramenta. 
 
-Para subir e executar o projeto, primeiro é necessário subir o banco. Esse projeto utiliza o `MySql` e você executá-lo através do `docker-compose`. Na pasta raiz do projeto abra um terminal e digite:
+Para criar uma nova imagem, primeiro crie um novo jar:
+
+Você pode subir a aplicação digitando:
 
 ```
 docker-compose up
 ```
 
-Abra uma nova aba do terminal e digite:
-
-```
-./gradlew bootRun
-``` 
-
-O projeto será inicializado na porta `8080`. Caso deseje inicializar em outra porta, basta alterar a propriedade `port` em `src/main/resources/application.yml`.
+Esse comando irá subir um container do `MySql` e também a aplicação na porta `8080`.
 
 Pronto! Você pode apontar seus testes para `http://localhost:8080`. 
 
