@@ -1,11 +1,10 @@
-version: "3"
+version: "3.8"
 services:
   app:
     image: rest-service:latest
     container_name: rest-service
     build:
       context: ./
-      dockerfile: ./Dockerfile
     ports:
       - 8080:8080
     networks:
@@ -15,8 +14,8 @@ services:
     environment:
       - ADDITIONAL_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m
       - PROFILE=dev
-      - SLEEP_LENGTH=5
-
+      - SLEEP_LENGTH=10
+      - SERVER_PORT=8080
 
   db:
     image: mysql
@@ -32,8 +31,6 @@ services:
       - seccomp:unconfined
     networks:
       - spring-cloud-network
-
-
 
 volumes:
   myapi_data:
