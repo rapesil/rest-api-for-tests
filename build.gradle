@@ -132,6 +132,6 @@ rootProject.tasks.named("processIntegrationTestResources") {
 }
 
 tasks.withType(Jar) {
-	destinationDir = file("$rootDir/jar")
+	destinationDir = file("$rootDir/build/libs/")
 }
 
