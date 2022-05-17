@@ -58,7 +58,11 @@ jobs:
         run: chmod +x gradlew
 
       - name: Unit Tests
-        run: ./gradlew test -x integrationTest
+        run: ${gradlew} test -x integrationTest
+        
+      - name: Mutation Test
+        run: ${gradlew} pitest
+    
         
   integration-tests:
     runs-on: ubuntu-latest
@@ -76,6 +80,6 @@ jobs:
         run: chmod +x gradlew
 
       - name: Integration Tests
-        run: ./gradlew integrationTest
+        run: ${gradlew} integrationTest
         
         
