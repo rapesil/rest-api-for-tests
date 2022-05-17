@@ -44,6 +44,9 @@ jobs:
           
   unit-tests:
     runs-on: ubuntu-latest
+    env:
+      ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+      gradlew: "./gradlew --console=plain -x test -x integrationTest --no-daemon"
     needs: [ static-checking ]
 
     steps:
@@ -66,6 +69,9 @@ jobs:
         
   integration-tests:
     runs-on: ubuntu-latest
+    env:
+      ACTIONS_ALLOW_UNSECURE_COMMANDS: true
+      gradlew: "./gradlew --console=plain -x test -x integrationTest --no-daemon"
     needs: [ unit-tests ]
 
     steps:
