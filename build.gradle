@@ -96,6 +96,7 @@ dependencies {
 	testImplementation "com.h2database:h2"
 	testImplementation group: 'org.assertj', name: 'assertj-core', version: '3.20.2'
 	testImplementation group: 'io.rest-assured', name: 'rest-assured', version: '4.1.2'
+	implementation 'org.springframework.kafka:spring-kafka:2.8.6'
 
 	compileOnly 'org.projectlombok:lombok:1.18.16'
 	annotationProcessor 'org.projectlombok:lombok:1.18.16'

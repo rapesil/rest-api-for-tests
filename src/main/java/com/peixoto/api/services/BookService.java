@@ -2,6 +2,7 @@ package com.peixoto.api.services;
 
 import com.peixoto.api.domain.Book;
 import com.peixoto.api.exceptions.BadRequestException;
+import com.peixoto.api.kafka.BookProducer;
 import com.peixoto.api.repository.BookRepository;
 import com.peixoto.api.requests.BookPostRequestBody;
 import com.peixoto.api.requests.BookPutRequestBody;
@@ -21,6 +22,9 @@ public class BookService {
     @Autowired
     private final BookRepository bookRepository;
 
+    @Autowired
+    private BookProducer kafkaBookProducer;
+
     public List<Book> findAll() {
         if(bookRepository.findAll() == null) {
             throw new NullPointerException("There is no books");
@@ -39,6 +43,11 @@ public class BookService {
         newBook.setTitle(book.getTitle());
         newBook.setAuthor(book.getAuthor());
         newBook.setBookCategory(book.getBookCategory());
+
+        Book savedBook = bookRepository.save(newBook);
+        //send to kafka
+        kafkaBookProducer.send(savedBook);
+
         return bookRepository.save(newBook);
     }
 
