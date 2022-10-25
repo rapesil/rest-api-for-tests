@@ -89,7 +89,7 @@ jobs:
         run: ${gradlew} integrationTest
         
       - name: Test marketplace action
-      - uses: simple-elf/allure-report-action@master
+        uses: simple-elf/allure-report-action@master
         if: always()
         id: allure-report
         with:
