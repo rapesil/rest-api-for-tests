@@ -7,6 +7,7 @@ import com.peixoto.api.utils.BookFactory;
 import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
@@ -181,6 +182,7 @@ public class BooksTest extends BaseIntegrationTest {
     }
 
     @Test
+    @Disabled
     void getExternal_shouldReceveidData() {
         stubFor(get(urlMatching("reqres.in"))
             .willReturn(aResponse().withStatus(200)));

@@ -4,7 +4,7 @@ MAINTAINER peixoto
 
 ADD build/distributions/*.zip /rest-api-for-tests.zip
 RUN unzip rest-api-for-tests.zip && \
-    rm -rf *.zip && \
+#    rm -rf *.zip && \
     mv rest-api-for-tests-* rest-api-for-tests
 
 EXPOSE 80 443

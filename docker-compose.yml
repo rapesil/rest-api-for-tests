@@ -1,26 +1,26 @@
 version: "3.8"
 services:
-  app:
-    image: rest-service:latest
-    container_name: rest-service
-    build:
-      context: ./
-    ports:
-      - 8080:8080
-    networks:
-      - spring-cloud-network
-    depends_on:
-      - db
-    environment:
-      - ADDITIONAL_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m
-      - PROFILE=dev
-      - SLEEP_LENGTH=10
-      - SERVER_PORT=8080
+#  app:
+#    image: rest-service:latest
+#    container_name: rest-service
+#    build:
+#      context: ./
+#    ports:
+#      - 8080:8080
+#    networks:
+#      - spring-cloud-network
+#    depends_on:
+#      - db
+#    environment:
+#      - ADDITIONAL_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -Xmx1G -Xms128m -XX:MaxMetaspaceSize=128m
+#      - PROFILE=dev
+#      - SLEEP_LENGTH=10
+#      - SERVER_PORT=8080
 
   db:
     image: mysql
     restart: on-failure
-    container_name: myapi_mysql
+    container_name: mysql
     environment:
       MYSQL_ROOT_PASSWORD: root
     ports:
@@ -29,12 +29,12 @@ services:
     - myapi_data:/var/lib/mysql
     security_opt:
       - seccomp:unconfined
-    networks:
-      - spring-cloud-network
+#    networks:
+#      - spring-cloud-network
 
 volumes:
   myapi_data:
 
-networks:
-  spring-cloud-network:
-    driver: bridge
+#networks:
+#  spring-cloud-network:
+#    driver: bridge
