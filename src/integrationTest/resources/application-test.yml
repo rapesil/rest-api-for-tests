@@ -7,8 +7,8 @@ spring:
   datasource:
     driver-class-name: org.h2.Driver
     url: jdbc:h2:mem:AZ
-    username: sa
-    password: password
+    username: root
+    password: root
     schema: classpath*:schema.sql
 
     jpa:
