@@ -2,7 +2,7 @@ name: Goiaba
 
 on:
   push:
-    branches: [ main ]
+    branches: [ aula-api ]
 
 jobs:
   laranja:
