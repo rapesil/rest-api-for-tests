@@ -101,6 +101,7 @@ dependencies {
 	testCompileOnly 'org.projectlombok:lombok:1.18.16'
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
 	integrationTestAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
+	testImplementation 'com.github.tomakehurst:wiremock:2.27.2'
 }
 
 dependencyManagement {

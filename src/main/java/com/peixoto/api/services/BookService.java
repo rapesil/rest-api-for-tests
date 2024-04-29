@@ -8,6 +8,7 @@ import com.peixoto.api.requests.BookPutRequestBody;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -22,6 +23,9 @@ public class BookService {
 
     @Autowired
     private final BookRepository bookRepository;
+
+    @Value("${spring.external.url}")
+    private String url;
 
     public List<Book> findAll() {
         if(bookRepository.findAll() == null) {
@@ -63,7 +67,7 @@ public class BookService {
 
     public String getExternalData() {
         RestTemplate restTemplate = new RestTemplate();
-        String fooResourceUrl = "https://reqres.in/api/users?page=2";
+        String fooResourceUrl = url;
         ResponseEntity<String> forEntity = restTemplate.getForEntity(fooResourceUrl, String.class);
         return forEntity.getBody();
     }

@@ -11,3 +11,6 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+
+  external:
+    url: https://reqres.in/api/users?page=2

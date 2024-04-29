@@ -15,3 +15,5 @@ spring:
       database-platform: org.hibernate.dialect.H2Dialect
       hibernate:
         ddl-auto: create-drop
+  external:
+    url: http://localhost:${mock_port}/api/users?page=2
