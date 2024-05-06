@@ -27,3 +27,9 @@ jobs:
       - name: Run checkstyle
         run: |
           ${gradlew} check
+
+      - name: teste de unidade
+        run: ${gradlew} test -x integrationTest
+
+      - name:
+        run: ${gradlew} integrationTest
