@@ -118,6 +118,8 @@ pitest {
 	junit5PluginVersion = '0.12'
 	testSourceSets.set([sourceSets.test, sourceSets.integrationTest])
 	jvmArgs.set(['-Xmx4096m'])
+	testStrengthThreshold.set(60)
+
 }
 
 test {

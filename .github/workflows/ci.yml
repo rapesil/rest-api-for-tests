@@ -77,6 +77,7 @@ jobs:
         run: ${gradlew} test -x integrationTest
 
   teste-de-integracao:
+    needs: teste-de-mutacao
     runs-on: ubuntu-latest
     env:
       ACTIONS_ALLOW_UNSECURE_COMMANDS: true
@@ -99,6 +100,7 @@ jobs:
         run: ${gradlew} integrationTest
 
   teste-de-mutacao:
+    needs: teste-de-unidade
     runs-on: ubuntu-latest
     env:
       ACTIONS_ALLOW_UNSECURE_COMMANDS: true
