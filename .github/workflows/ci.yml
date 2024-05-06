@@ -29,6 +29,7 @@ jobs:
           ${gradlew} check -x test -x integrationTest
 
   testes-de-unidade:
+    needs: analise-estatica
     runs-on: ubuntu-latest
     env:
       ACTIONS_ALLOW_UNSECURE_COMMANDS: true
@@ -51,6 +52,7 @@ jobs:
         run: ${gradlew} test -x integrationTest
 
   teste-de-integracao:
+    needs: testes-de-unidade
     runs-on: ubuntu-latest
     env:
       ACTIONS_ALLOW_UNSECURE_COMMANDS: true
