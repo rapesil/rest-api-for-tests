@@ -53,7 +53,7 @@ jobs:
         run: |
           ${gradlew} check -x test -x integrationTest
 
-  testes-de-unidade:
+  teste-de-unidade:
     needs: analise-estatica
     runs-on: ubuntu-latest
     env:
